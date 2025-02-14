@@ -1,6 +1,9 @@
 import { loadData } from "/utils/loadData";
 import { chain } from "/utils/chain";
 import { getCurrentTimestamp } from "/utils/currentTimestamp"
+import { generateSpeech } from "./utils/ttsTool";
+import { generateText } from "./utils/sttTool.js";
+
 // Load initial file
 // try {
 //   const result = await fetch('personal-info.txt');
@@ -11,11 +14,87 @@ import { getCurrentTimestamp } from "/utils/currentTimestamp"
 //   console.log(err);
 // }
 
-const conversationHistory = []
+const conversationHistory = [];
+let currentAssistantMessage = "";
+
+document.getElementById('capture-button').addEventListener('click', async (e) => {
+  e.preventDefault();
+  const text = document.getElementById('user-input').value;
+  if (!text) {
+    alert('Please enter some text');
+    return;
+  }
+  try {
+    await loadData(text);
+  } catch (error) {
+    console.error('Error:', error);
+    alert('Error loading data');
+  }
+  console.log("Data successfully loaded")
+});
 
 document.getElementById('input-button').addEventListener('click', async (e) => {
   e.preventDefault();
   renderConversation();
+});
+
+let mediaRecorder;
+let audioChunks = [];
+document.getElementById('record-audio-button').addEventListener('click', async (e) => {
+  e.preventDefault();
+  const recordButton = document.getElementById('record-audio-button');
+  const icon = recordButton.querySelector('i');
+
+  if (icon.classList.contains('fa-microphone')) {
+    // Start recording
+    icon.classList.remove('fa-microphone');
+    icon.classList.add('fa-microphone-slash');
+    audioChunks = [];
+    const stream = await navigator.mediaDevices.getUserMedia({ audio: true });
+    mediaRecorder = new MediaRecorder(stream);
+    mediaRecorder.ondataavailable = (event) => {
+      audioChunks.push(event.data);
+    };
+    mediaRecorder.start();
+  } else {
+    // Stop recording
+    icon.classList.remove('fa-microphone-slash');
+    icon.classList.add('fa-microphone');
+    mediaRecorder.stop();
+    mediaRecorder.onstop = async () => {
+      const audioBlob = new Blob(audioChunks, { type: 'audio/wav' });
+      const audioFile = new File([audioBlob], 'audio.wav', { type: 'audio/wav' });
+      audioPlayer.src = URL.createObjectURL(audioBlob);
+      audioPlayer.play();
+      try {
+        const text = await generateText(audioFile);
+        document.getElementById('user-input').value = text;
+      } catch (error) {
+        console.error('Error:', error);
+        alert('Error generating text');
+      }
+    };
+  }
+});
+
+document.getElementById('generate-speech-button').addEventListener('click', async (e) => {
+  e.preventDefault();
+  const text = currentAssistantMessage;
+  if (!text) {
+    alert('Please enter some text');
+    return;
+  }
+
+  try {
+    const speechFile = await generateSpeech(text);
+    console.log(speechFile)
+    const audioPlayer = document.getElementById('audioPlayer');
+    audioPlayer.src = URL.createObjectURL(new Blob([speechFile], { type: 'audio/mp3' }));
+    audioPlayer.play();
+  } catch (error) {
+    console.error('Error:', error);
+    alert('Error generating speech');
+  }
 });
 
 async function renderConversation() {
@@ -36,7 +115,7 @@ async function renderConversation() {
 
   // Create user avatar image
   const userAvatar = document.createElement("img");
-  userAvatar.src = "assets/user.png";
+  userAvatar.src = "assets/user_profile.png";
   userAvatar.alt = "User Avatar";
   userAvatar.classList.add("avatar");
 
@@ -72,7 +151,7 @@ async function renderConversation() {
 
   // Create assistant avatar image
   const assistantAvatar = document.createElement("img");
-  assistantAvatar.src = "assets/aish.png";
+  assistantAvatar.src = "assets/ai_profile.png";
   assistantAvatar.alt = "Assistant Avatar";
   assistantAvatar.classList.add("avatar");
 
@@ -87,9 +166,10 @@ async function renderConversation() {
   const response = await chain.invoke({ history: conversationHistory, query });
   conversationHistory.push(query);
   conversationHistory.push(response);
-  
+
   // Update the assistant message text and timestamp
   assistantMessageText.textContent = response;
+  currentAssistantMessage = response;
   assistantMessageTimestamp.textContent = getCurrentTimestamp();
 
   // Append assistant message text to the assistant message container

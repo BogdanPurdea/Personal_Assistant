@@ -89,15 +89,47 @@ input {
     background-color: #073A67;
 }
 
+.button-group {
+    display: flex;
+    gap: 10px;
+    margin-top: 5px;
+}
+
 button {
-    margin-top: 10px;
-    padding: 10px;
-    background: #3F607C;
-    color: #ffffff;
+    margin-top: 5px;
+    padding: 20px;
     font-weight: bold;
     border: none;
     border-radius: 5px;
     cursor: pointer;
+    font-size: 16px;
+    width: 100%;
+    flex-wrap: nowrap; /* Prevents wrapping */
+    overflow: hidden;
+}
+
+#capture-button {
+    flex: 3;
+    background: #ffffff;
+    color: #3F607C;
+}
+
+#input-button {
+    flex: 6;
+    background: #3F607C;
+    color: #ffffff;
+}
+
+#record-audio-button {
+    flex: 1;
+    background: #ffffff;
+    color: #3F607C;
+}
+
+#generate-speech-button {
+    flex: 0 0 15%;
+    background: #3F607C;
+    color: #ffffff;
 }
 
 .timestamp {
@@ -105,4 +137,22 @@ button {
     font-size: 12px;
     color: #ccc;
     margin: 5px 0;
+}
+
+.audio-wrapper {
+    flex: 1 0 85%; 
+    display: flex;
+    align-items: center; 
+    margin-right: 5px;
+    max-width: 83.5%;
+    margin: 0;
+}
+
+audio#audioPlayer {
+    width: 100%;
+    margin-top: 5px;
+    max-width: 100%;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    background-color: #f9f9f9;
 }
