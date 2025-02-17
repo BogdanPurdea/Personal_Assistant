@@ -27,23 +27,18 @@ This AI-powered personal assistant integrates with OpenAI's API to provide intel
 - A Supabase project and API credentials
 
 ### Installation
-1. Clone the repository:
-   ```sh
-   git clone https://github.com/your-repo/ai-personal-assistant.git
-   cd ai-personal-assistant
-   ```
-2. Install dependencies:
+1. Install dependencies:
    ```sh
    npm install
    ```
-3. Set up environment variables:
+2. Set up environment variables:
    Create a `.env` file in the root directory and add your credentials:
    ```env
    OPENAI_API_KEY=your_openai_api_key
    SUPABASE_URL=your_supabase_url
    SUPABASE_ANON_KEY=your_supabase_anon_key
    ```
-4. Start the development server:
+3. Start the development server:
    ```sh
    npm start
    ```
