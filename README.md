@@ -14,8 +14,7 @@ This AI-powered personal assistant integrates with OpenAI's API to provide intel
 - The assistant learns and references new information over time.
 
 ### Speech-to-Text
-- Users can record their voice using the `MediaRecorder`  interface of the MediaStream Recording API.
-- Captured audio is sent to OpenAI's speech-to-text endpoint for transcription.
+- Users can record their voice, and captured audio is sent to OpenAI's speech-to-text endpoint for transcription.
 - The transcribed text is automatically populated into the chat input for hands-free interaction.
 
 ### Text-to-Speech
@@ -24,15 +23,14 @@ This AI-powered personal assistant integrates with OpenAI's API to provide intel
 
 ## Setup Instructions
 ### Prerequisites
-
 - A valid OpenAI API key
 - A Supabase project and API credentials
 
 ### Installation
 1. Clone the repository:
    ```sh
-   git clone https://github.com/BogdanPurdea/Personal_Assistant.git
-   cd personal-assistant
+   git clone https://github.com/your-repo/ai-personal-assistant.git
+   cd ai-personal-assistant
    ```
 2. Install dependencies:
    ```sh
@@ -46,10 +44,9 @@ This AI-powered personal assistant integrates with OpenAI's API to provide intel
    SUPABASE_ANON_KEY=your_supabase_anon_key
    ```
 4. Start the development server:
-    ```sh
-    npm start
-    ```
-
+   ```sh
+   npm start
+   ```
 ## Usage
 - Type or speak your query to interact with the assistant.
 - The assistant will generate responses based on available data and stored memory.
@@ -59,5 +56,5 @@ This AI-powered personal assistant integrates with OpenAI's API to provide intel
 ## Dependencies
 - [OpenAI API](https://openai.com/) - Used for AI-powered chat, speech-to-text, and text-to-speech functionalities.
 - [Supabase](https://supabase.io/) - Provides a vector store for storing and retrieving user data.
-- [Vite](https://vitejs.dev/) - A fast build tool for developing and bundling the project.
-- [MediaRecorder API](https://developer.mozilla.org/en-US/docs/Web/API/MediaRecorder) - Used for capturing user audio input.
+- [Vite](https://vitejs.dev/) - A fast build tool for developing and bundling the project. This Vite setup was provided by the Scrimba environment.
+- [LangChain](https://python.langchain.com/) - Used for managing AI workflows, memory, and retrieval-augmented generation (RAG) for enhanced interactions.
