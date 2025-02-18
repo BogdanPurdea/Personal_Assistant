@@ -1,10 +1,11 @@
 import path from "path";
 import OpenAI from "openai";
+import dotenv from 'dotenv';
 
-const apiKey = import.meta.env.VITE_OPENAI_API_KEY
+dotenv.config();
+
 const openai = new OpenAI({
-    apiKey: apiKey,
-    dangerouslyAllowBrowser: true
+    apiKey: process.env.OPENAI_API_KEY,
 });
 
 export async function generateSpeech(input) {
@@ -12,7 +13,7 @@ export async function generateSpeech(input) {
     const mp3 = await openai.audio.speech.create({
         model: "tts-1",
         voice: "nova",
-        input
+        input: input
     });
 
     return await mp3.arrayBuffer();

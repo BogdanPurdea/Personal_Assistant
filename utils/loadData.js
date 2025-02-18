@@ -1,5 +1,5 @@
 import { RecursiveCharacterTextSplitter } from "@langchain/textsplitters";
-import { vectorStore } from "/utils/vectorStore";
+import { vectorStore } from "./vectorStore.js";
 
 export async function loadData(data) {
     const splitter = new RecursiveCharacterTextSplitter({

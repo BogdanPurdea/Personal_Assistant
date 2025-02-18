@@ -1,13 +1,14 @@
 import { SupabaseVectorStore } from "@langchain/community/vectorstores/supabase";
 import { OpenAIEmbeddings } from "@langchain/openai";
-
 import { createClient } from '@supabase/supabase-js'
+import dotenv from 'dotenv';
 
-const supabaseUrl = import.meta.env.VITE_SUPABASE_URL
-const supabaseKey = import.meta.env.VITE_SUPABASE_API_KEY
-const apiKey = import.meta.env.VITE_OPENAI_API_KEY;
+dotenv.config();
+
+const supabaseUrl = process.env.SUPABASE_URL;
+const supabaseKey = process.env.SUPABASE_API_KEY;
 const embeddings = new OpenAIEmbeddings({
-  openAIApiKey: apiKey,
+  openAIApiKey: process.env.OPENAI_API_KEY,
   model: "text-embedding-3-small",
 });
 

@@ -2,11 +2,11 @@ import { ChatOpenAI } from "@langchain/openai";
 import { StringOutputParser } from "@langchain/core/output_parsers";
 import { ChatPromptTemplate } from "@langchain/core/prompts";
 import { RunnableSequence, RunnablePassthrough } from "@langchain/core/runnables";
-import { retriever } from "/utils/retriever"
+import { retriever } from "./retriever.js"
 
-const apiKey = import.meta.env.VITE_OPENAI_API_KEY
+
 const model = new ChatOpenAI({
-  openAIApiKey: apiKey,
+  openAIApiKey: process.env.OPENAI_API_KEY,
   model: "gpt-4o-mini",
   temperature: 0
 });
@@ -43,21 +43,21 @@ const chain = RunnableSequence.from([
     standaloneQuery: standaloneQueryChain,
     input: new RunnablePassthrough()
   },
-//   input => {
-//     console.log(input);
-//     return input;
-//   },
+  // input => {
+  //   console.log(input);
+  //   return input;
+  // },
   {
     context: retrieverChain,
     history: ({ input }) => input.history,
     query: ({ input }) => input.query
   },
-//   input => {
-//     console.log("History: ", input.history);
-//     console.log("Context: ", input.context);
-//     console.log("Question: ", input.query);
-//     return input;
-//   },
+  // input => {
+  //   console.log("History: ", input.history);
+  //   console.log("Context: ", input.context);
+  //   console.log("Question: ", input.query);
+  //   return input;
+  // },
   answerChain
 ]);
 

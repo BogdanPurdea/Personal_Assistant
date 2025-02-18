@@ -1,4 +1,6 @@
 .env
 node_modules
 dist
-assets/generated_images
+generated_images
+*.py
+workers
