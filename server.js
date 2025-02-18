@@ -20,8 +20,14 @@ const __dirname = path.dirname(__filename);
 // Graceful shutdown handling
 process.on('SIGTERM', () => {
     console.log('Received SIGTERM. Performing graceful shutdown...');
-    cleanup();
-    process.exit(0);
+    server.close(() => {
+        console.log("Server closed. Performing cleanup...");
+
+        cleanup();
+
+        console.log("Cleanup complete. Exiting process.");
+        process.exit(0);
+    });
 });
 
 // Cleanup function
