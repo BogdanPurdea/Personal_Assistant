@@ -4,6 +4,8 @@
 This project was created as part of the AI Engineer Path provided by Scrimba.
 This AI-powered personal assistant integrates with OpenAI's API to provide intelligent and personalized interactions. It leverages a Supabase vector store for contextual memory and supports both text and voice-based interactions.
 
+You can check out the deployed app here: Deployed App[https://personal-assistant-1vkb.onrender.com].
+
 ## Features
 ### AI-Powered Chat
 - Users can interact with an AI assistant powered by OpenAI's API.
