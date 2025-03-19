@@ -4,16 +4,21 @@ FROM node:22
 # Set the working directory
 WORKDIR /app
 
-# Copy package.json and package-lock.json
+# Copy package files
 COPY package*.json ./
 
 # Install dependencies
 RUN npm install
 
-# Copy the rest of the application code
-COPY . .
+# Copy the client and server directories
+COPY client/ ./client/
+COPY server/ ./server/
 
-# Build the application
+# Copy configuration files
+COPY vite.config.js ./
+COPY .env ./
+
+# Build the client application
 RUN npm run build
 
 # Expose the port the app runs on
