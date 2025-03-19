@@ -16,7 +16,6 @@ COPY server/ ./server/
 
 # Copy configuration files
 COPY vite.config.js ./
-COPY .env ./
 
 # Build the client application
 RUN npm run build
