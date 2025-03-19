@@ -1,4 +1,4 @@
-import { renderConversation } from "./utils/renderConversation.js"
+import { renderConversation } from "./components/renderConversation.js"
 // Load initial file
 // try {
 //   const result = await fetch('personal-info.txt');

@@ -4,9 +4,9 @@ import path from 'path';
 import fs from "fs";
 import { fileURLToPath } from 'url';
 import { loadData } from './utils/loadData.js';
-import { generateText } from './utils/sttTool.js';
-import { generateSpeech } from './utils/ttsTool.js';
-import { chain } from './utils/chain.js';
+import { generateText } from './services/sttTool.js';
+import { generateSpeech } from './services/ttsTool.js';
+import { chain } from './services/chain.js';
 import dotenv from 'dotenv';
 
 dotenv.config();
@@ -47,7 +47,7 @@ setInterval(() => {
 }, 30000);
 
 // Middleware
-app.use(express.static(path.join(__dirname, 'dist')));
+app.use(express.static(path.join(__dirname, '../../client/dist')));
 app.use(express.json({ limit: '10mb' })); // Limit payload size
 app.use(fileUpload({
     limits: { fileSize: 5 * 1024 * 1024 }, // 5MB limit
@@ -135,7 +135,7 @@ app.post('/processQuery', async (req, res) => {
 
 // Catch-all route for SPA
 app.get('*', (req, res) => {
-    res.sendFile(path.join(__dirname, 'dist', 'index.html'));
+    res.sendFile(path.join(__dirname, '../../client/dist/index.html'));
 });
 
 app.listen(port, () => {

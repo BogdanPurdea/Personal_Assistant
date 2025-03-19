@@ -1,4 +1,4 @@
-import { getCurrentTimestamp } from "./currentTimestamp.js"
+import { getCurrentTimestamp } from "../utils/currentTimestamp.js"
 import userAvatarSrc from "../assets/user_profile.png";
 import assistantAvatarSrc from "../assets/ai_profile.png";
 

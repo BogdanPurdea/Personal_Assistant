@@ -2,7 +2,7 @@ import { ChatOpenAI } from "@langchain/openai";
 import { StringOutputParser } from "@langchain/core/output_parsers";
 import { ChatPromptTemplate } from "@langchain/core/prompts";
 import { RunnableSequence, RunnablePassthrough } from "@langchain/core/runnables";
-import { retriever } from "./retriever.js"
+import { retriever } from "../utils/retriever.js"
 
 
 const model = new ChatOpenAI({
@@ -20,6 +20,7 @@ const standaloneQueryPrompt = ChatPromptTemplate.fromTemplate(standaloneQueryTem
 const answerTemplate = `You are an adaptive AI assistant, designed to provide accurate and context-aware responses. You have access to a conversation history and relevant context.  
 Use a calm, precise, adaptive and inquisitive tone. Speak with a balance of warmth and efficiency.
 Process the user query based strictly on the given context. Do not generate information beyond what is provided. Refer to the conversation history if necessary to maintain coherence.  
+If the context database is paused, respond accordingly.
 
 conversation history: {history}  
 context: {context}  
@@ -32,8 +33,14 @@ const standaloneQueryChain = standaloneQueryPrompt.pipe(model).pipe(new StringOu
 
 const retrieverChain = RunnableSequence.from([
   input => input.standaloneQuery,
-  retriever,
-  docs => docs.map(doc => doc.pageContent).join('\n')
+  async (query) => {
+    try {
+      const docs = await retriever.invoke(query);
+      return docs.map(doc => doc.pageContent).join('\n');
+    } catch (error) {
+      return "The context database is currently paused. Please try again later.";
+    }
+  }
 ]);
 
 const answerChain = answerPrompt.pipe(model).pipe(new StringOutputParser());
